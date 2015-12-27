@@ -1,0 +1,17 @@
+<div layout="row">
+    <md-content>
+
+
+    <md-button ng-click="ctrl.bulkDocs()">bulkDocs</md-button>
+
+    <md-button ng-click="ctrl.replicateTo()">Replicate To</md-button>
+
+
+    {{ctrl.data}}
+    
+    <md-card ng-repeat="d in ctrl.docs">
+      {{d}}
+    </md-card>
+
+    </md-content>
+</div>
