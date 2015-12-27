@@ -1,17 +1,42 @@
-<div layout="row">
-    <md-content>
+<div layout="column" style="height:100%;">
+    <div layout="row" flex>
+
+        <md-sidenav class="md-sidenav-left md-whiteframe-z2" md-component-id="left" md-is-locked-open="$mdMedia('gt-sm')">
+          <md-button ng-click="ctrl.getInitData()" ng-hide="ctrl.hasDocs();" >Get Initial Data</md-button>
+          <md-button ng-click="ctrl.bulkDocs()" ng-hide="ctrl.hasDocs();">Bulk Import Docs</md-button>
+          <md-button ng-click="ctrl.replicateTo()" ng-show="ctrl.hasDocs();">Replicate To Drupal</md-button>
+        </md-sidenav>
+        
+
+        <md-content flex ng-hide="ctrl.hasDocs();" ng-cloak>
+          <md-list>
+          <md-list-item class="md-3-line" ng-repeat="d in ctrl.docs">
+                  <div class="md-list-item-text">
+          <pre>{{d|json}}</pre>
+                  </div>
+          <md-divider ng-if="!$last"></md-divider>
+          </md-list-item>
+          </md-list>
+        </md-content>
 
 
-    <md-button ng-click="ctrl.bulkDocs()">bulkDocs</md-button>
+        <md-content flex ng-show="ctrl.hasDocs();">
+          <md-toolbar>
+          <div class="md-toolbar-tools">IndexedDB Data Loaded</div>
+          </md-toolbar>
 
-    <md-button ng-click="ctrl.replicateTo()">Replicate To</md-button>
+          <md-list>
+          <md-list-item class="md-3-line" ng-repeat="d in ctrl.alldocs">
+          <div class="md-list-item-text">
+          <pre>{{d|json}}</pre>
+                  </div>
+          <md-divider ng-if="!$last"></md-divider>
+          </md-list-item>
+          </md-list>
+        </md-content>
 
 
-    {{ctrl.data}}
-    
-    <md-card ng-repeat="d in ctrl.docs">
-      {{d}}
-    </md-card>
 
-    </md-content>
+
+    </div>
 </div>

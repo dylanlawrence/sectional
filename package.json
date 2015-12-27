@@ -1,7 +1,9 @@
 {
   "name": "sectional",
   "version": "0.0.0",
-  "dependencies": {},
+  "dependencies": {
+    "gulp-ng-config": "^1.2.1"
+  },
   "scripts": {
     "test": "gulp test"
   },
