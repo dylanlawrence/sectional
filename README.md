@@ -17,11 +17,9 @@ $ bower install
 ### Config
 
 To setup the angular config that is ENV specific, 
-it will do it pull the json from {src/config/angular-config.json}
-and convert it to a module that is injected into the app.
+it will do it pull the json from *src/config/angular-config.json*
+and convert it to a module that is injected into the Angular app.
 
 ```sh
-$ npm install -g gulp bower
-$ npm install
-$ bower install
+ src/config/angular-config.json
 ```
