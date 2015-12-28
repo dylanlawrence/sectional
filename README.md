@@ -1,4 +1,5 @@
-# sectional
+sectional
+---------
 
 Angular and PouchDB to replicate to Drupal 8 Relaxed endpoints
 
@@ -23,3 +24,10 @@ Just adjust and change the
 **src/config/angular-config.example** 
  to
 **src/config/angular-config.json**
+
+
+### Run
+
+```sh
+$ gulp serve
+```
