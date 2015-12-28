@@ -8,7 +8,7 @@ var gulpNgConfig = require('gulp-ng-config');
 
 gulp.task('angular-config', function(e) {
 
-//process.env.NODE_ENV
+		//process.env.NODE_ENV
     gulp.src(path.join(conf.paths.src, '/config/angular-config.json'))
     .pipe(gulpNgConfig('app.config', {
         environment: 'development' 

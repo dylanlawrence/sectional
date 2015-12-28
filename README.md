@@ -16,10 +16,10 @@ $ bower install
 
 ### Config
 
-To setup the angular config that is ENV specific, 
-it will do it pull the json from *src/config/angular-config.json*
-and convert it to a module that is injected into the Angular app.
+To configure angular constants ENV specific etc, 
+we take some *json* and convert it to a module that is injected into the app.
 
-```sh
- src/config/angular-config.json
-```
+Just adjust and change the 
+**src/config/angular-config.example** 
+ to
+**src/config/angular-config.json**
