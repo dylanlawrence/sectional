@@ -2,14 +2,14 @@
     "development": {
         "version": "0.0.1",
         "ENV": {
-            "remoteDB" : "http://replicator:replicator@aqua.local:80",
+            "remoteDB" : "http://replicator:replicator@localhost",
             "api": "http://localhost/"
         }
     },
     "production": {
         "version": "0.0.1",
         "ENV": {
-            "remoteDB" : "http://replicator:replicator@aqua.local:80",
+            "remoteDB" : "http://replicator:replicator@localhost",
             "api": "https://api.production.com/"
         }
     }
