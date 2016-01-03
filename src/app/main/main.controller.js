@@ -8,7 +8,6 @@
         var db = pouchDB('default');
         var remoteDB = ENV.remoteDB + '/relaxed/default';
 
-
         //console.log(ENV);
         vm.alldocs = [];
         // get all docs loaded in db
@@ -47,6 +46,8 @@
                 });
             }
 
+
+
         // replicate To
         vm.replicateTo = function() {
 
@@ -54,10 +55,6 @@
                 live: true,
                 ajax: {
                   withCredentials:true
-                },
-                auth : {
-                  username : 'admin',
-                  password : 'unsafe'
                 }
             };
 
@@ -83,5 +80,17 @@
                 toastr.error('Failed Replication ' + remoteDB);
             });
         }
+
+
+        db.replicate.from(remoteDB, function (err, result) {
+          console.log(result, "-->result replicate FROM remote");
+        }).on('error', function (err) {
+          console.log(err, "err from");
+          syncError();
+        });
+
+
+
+
     };
 })();
