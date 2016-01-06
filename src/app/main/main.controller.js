@@ -8,8 +8,6 @@
         var db = pouchDB('default');
         var remoteDB = ENV.remoteDB + 'relaxed/default';
 
-
-
         function onChange(change) {
           vm.alldocs.push(change);
         }

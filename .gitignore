@@ -6,3 +6,4 @@ coverage/
 .tmp/
 dist/
 src/config/*.json
+src/angular-config.js
