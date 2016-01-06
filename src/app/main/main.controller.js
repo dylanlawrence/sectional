@@ -6,7 +6,20 @@
     function MainController(ENV, User, $http, pouchDB, toastr) {
         var vm = this;
         var db = pouchDB('default');
-        var remoteDB = ENV.remoteDB + '/relaxed/default';
+        var remoteDB = ENV.remoteDB + 'relaxed/default';
+
+
+
+        function onChange(change) {
+          vm.alldocs.push(change);
+        }
+
+        vm.changes = db.changes({
+          live: true,
+          include_docs: true
+        }).$promise
+          .then(null, null, onChange);
+
 
         //console.log(ENV);
         vm.alldocs = [];
@@ -46,13 +59,10 @@
                 });
             }
 
-
-
         // replicate To
         vm.replicateTo = function() {
 
             var opts = {
-                live: true,
                 ajax: {
                   withCredentials:true
                 }
@@ -79,16 +89,43 @@
             }).on('error', function(err) {
                 toastr.error('Failed Replication ' + remoteDB);
             });
-        }
+        };
 
+      // replicate From
+      vm.replicateFrom = function() {
 
-        db.replicate.from(remoteDB, function (err, result) {
-          console.log(result, "-->result replicate FROM remote");
-        }).on('error', function (err) {
-          console.log(err, "err from");
-          syncError();
+        var opts = {
+          ajax: {
+            withCredentials:true
+          }
+        };
+
+        db.replicate.from(remoteDB, opts).on('change', function(info) {
+          toastr.success('Replicated  From ' + remoteDB);
+          vm.getAllDocs();
+        }).on('paused', function() {
+          toastr.info('Paused Replication for ' + remoteDB);
+          vm.getAllDocs();
+        }).on('active', function() {}).on('denied', function(info) {
+          toastr.error('Denied for ' + remoteDB);
+        }).on('complete', function(info) {
+
+          console.log(info);
+
+          if(info.ok){
+            toastr.success('Completed Replication for ' + remoteDB);
+            vm.getAllDocs();
+          } else {
+            angular.forEach( info.errors, function(v,k){
+              toastr.error(v.status + ' Error ' + v.message);
+            });
+          }
+
+        }).on('error', function(err) {
+          toastr.error('Failed Replication ' + remoteDB);
         });
 
+      };
 
 
 

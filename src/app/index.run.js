@@ -21,6 +21,7 @@
     Offline.on('confirmed-down', function(e){
       console.log('Still Down');
     } , '');
+
     //console.log(Offline);
   }
 

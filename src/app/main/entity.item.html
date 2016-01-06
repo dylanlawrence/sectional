@@ -1,0 +1,31 @@
+<md-list-item class="md-1-line">
+
+  <md-button class="md-fab md-mini md-primary">
+    <md-tooltip md-direction="left">
+       {{vm.doc['type'][0]['target_id']|uppercase}} {{vm.doc['@type']}}
+    </md-tooltip>
+    <md-icon md-font-library="material-icons" >{{vm.getIcon()}}</md-icon>
+  </md-button>
+
+    <span ng-switch="vm.doc['@type']">
+        <span ng-switch-when="user">
+          <md-input-container >
+            <label>Name</label>
+            <input ng-model="vm.doc.name[0].value"/>
+          </md-input-container>
+        </span>
+
+        <span ng-switch-when="node">
+          <md-input-container flex>
+            <label>Title</label>
+            <input ng-model="vm.doc.title[0].value"/>
+          </md-input-container>
+        </span>
+    </span>
+
+  <md-button class="md-fab md-mini md-primary md-secondary" aria-label="refresh" ng-click="vm.openDialog()">
+    open
+  </md-button>
+
+</md-list-item>
+
