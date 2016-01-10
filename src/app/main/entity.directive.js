@@ -33,9 +33,9 @@
           $mdDialog.alert()
             .clickOutsideToClose(true)
             .title('Opening from the left')
-            .content(vm)
+            .content('<pre>'+angular.toJson(vm.doc, true)+'</pre>')
             .ariaLabel('Left to right demo')
-            .ok('Nice!')
+            .ok('Ok Cool')
         );
       };
 
