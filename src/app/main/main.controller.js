@@ -1,25 +1,35 @@
 (function () {
   'use strict';
   angular.module('sectional').controller('MainController', MainController);
-  MainController.$inject = ['$scope', '$log', 'ENV', 'User', '$http', 'pouchDB', 'toastr'];
+  MainController.$inject = ['$scope', '$log', '$filter','$http', '$timeout',  'ENV', 'localStorageService', 'User', 'pouchDB', 'toastr'];
 
-  function MainController($scope, $log, ENV, User, $http, pouchDB, toastr) {
+  function MainController($scope, $log, $filter, $http, $timeout, ENV, localStorageService, User, pouchDB, toastr) {
 
     var vm  = this;
     vm.env  = ENV;
     var db  = pouchDB('default');
 
-
     $scope.remoteList = [
-      {label:'Couch DB', url:ENV.couchDB + 'default'},
-      {label:'Drupal Relaxed DB', url: ENV.drupalDB + 'default'}
+      {id:'couch',label:'Couch DB', url:ENV.couchDB + 'default'},
+      {id:'drupal',label:'Drupal Relaxed DB', url: ENV.drupalDB + 'default'}
     ];
 
     $scope.remote = $scope.remoteList[0];
 
-    $scope.$watch('remote', function(){
-      vm.remoteDB = $scope.remote.url;
-    });
+    var lr = localStorageService.get('remote');
+    $log.info(lr);
+
+    if(lr) {
+      $log.info(lr.id, $filter('getById')($scope.remoteList, lr.id));
+      $scope.remote = $filter('getById')($scope.remoteList, lr.id);
+    }
+
+    $timeout( function(){
+      $scope.$watch('remote', function() {
+        localStorageService.set('remote', $scope.remote);
+        vm.remoteDB = $scope.remote.url;
+      });
+    },500);
 
     //vm.remoteDB = vm.remoteList[0].url;
 

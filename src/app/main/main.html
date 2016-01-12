@@ -5,7 +5,7 @@
 
       <div class="logo">
         <img src="assets/images/sectional.jpg">
-        <h1 style="margin-bottom:0">Sectional</h1>
+        <h3 style="margin-bottom:0">Sectional</h3>
         <p layout-padding="" style="padding-top:0; margin-top:0">A test app for getting comfortable with an Angular-Couch environment, to also tie the room together so we can invite friends.</p>
       </div>
       <md-divider></md-divider>
@@ -19,12 +19,13 @@
 
       <md-subheader>Replicate to and from remote</md-subheader>
       <md-card>
-        <md-button ng-click="ctrl.replicateFrom()" class="md-raised md-primary">Replicate From Remote<br/>
-          <small></small>
+        <md-button ng-click="ctrl.replicateTo()" ng-show="ctrl.hasDocs();" class="md-raised md-primary">
+          <md-icon md-font-library="material-icons">file_upload</md-icon>
+          Replicate To Remote
         </md-button>
-        <md-button ng-click="ctrl.replicateTo()" ng-show="ctrl.hasDocs();" class="md-raised md-primary">Replicate To
-          Remote<br/>
-          <small></small>
+        <md-button ng-click="ctrl.replicateFrom()" class="md-raised md-primary">
+          <md-icon md-font-library="material-icons">file_download</md-icon>
+          Replicate From Remote
         </md-button>
       </md-card>
 
@@ -57,10 +58,8 @@
       <md-subheader> {{ctrl.remoteDB}}</md-subheader>
 
       <md-list>
-
         <entity-item ng-repeat-start="d in ctrl.alldocs" doc="d.doc" show="show"></entity-item>
         <md-divider ng-if="!$last" ng-repeat-end></md-divider>
-
       </md-list>
 
 
