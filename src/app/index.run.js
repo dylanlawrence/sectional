@@ -8,8 +8,7 @@
   /** @ngInject */
   function runBlock($log) {
 
-    $log.debug('runBlock end');
-
+    //$log.debug('runBlock end');
 
     Offline.options = {
       interceptRequests: false,
@@ -20,17 +19,19 @@
       }
     };
 
-
     Offline.on('up', function(e){
-      console.log("we're back, Let's Party!");
+      $log.debug(e);
+      $log.info("we're back, Let's Party!");
     } , '');
 
     Offline.on('down', function(e){
-      console.log("We're down, Oh Crap!");
+      $log.debug(e);
+      $log.info("We're down, Oh Crap!");
     } , '');
 
     Offline.on('confirmed-down', function(e){
-      console.log('Still Down');
+      $log.debug(e);
+      $log.info('Still Down');
     } , '');
 
   }

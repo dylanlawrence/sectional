@@ -1,16 +1,15 @@
 (function () {
   'use strict';
   angular.module('sectional').controller('MainController', MainController);
-  MainController.$inject = ['ENV', 'User', '$http', 'pouchDB', 'toastr'];
+  MainController.$inject = ['$log', 'ENV', 'User', '$http', 'pouchDB', 'toastr'];
 
-  function MainController(ENV, User, $http, pouchDB, toastr) {
+  function MainController($log, ENV, User, $http, pouchDB, toastr) {
+
     var vm       = this;
     var db       = pouchDB('default');
-    var remoteDB = ENV.remoteDB + 'relaxed/default';
 
+    vm.remoteDB = ENV.remoteDB + 'default';
 
-
-    //console.log(ENV);
     vm.alldocs = [];
     // get all docs loaded in db
     vm.getAllDocs = function () {
@@ -19,9 +18,8 @@
         descending: true
       }).then(function (res) {
         vm.alldocs = res.rows;
-        //console.log(vm.alldocs);
       });
-    }
+    };
 
     vm.changes = db.changes({
       live: true,
@@ -30,27 +28,34 @@
     }).$promise
       .then(null, null, vm.getAllDocs);
 
+
+
+
     vm.hasDocs = function () {
       return vm.alldocs.length != 0;
     }
+
     // get some dummy data
     vm.getInitData = function () {
       $http({
         method: 'GET',
         url: 'assets/dummy/documents.json'
-      }).then(function successCallback(response) {
+      }).then(function successCallback(res) {
         toastr.success('Init Data Loaded Success');
-        vm.docs = response.data;
-      }, function errorCallback(response) {});
+        vm.docs = res.data;
+      }, function errorCallback(err) {
+        $log.error(err);
+      });
     }
 
     // bulk add it to db
     vm.bulkDocs = function () {
       db.bulkDocs(vm.docs).then(function (result) {
-        toastr.success('Bulk Import Success');
+        $log(result);
+        toastr.success('Bulk Create Success');
         vm.getAllDocs();
       }).catch(function (err) {
-        console.log(err);
+        $log.error(err);
       });
     }
 
@@ -63,23 +68,26 @@
         }
       };
 
-      db.replicate.to(remoteDB, opts).on('change', function (info) {
-        toastr.success('Replicated to ' + remoteDB);
+      db.replicate.to(vm.remoteDB, opts).on('change', function (info) {
+        $log.info(info);
+        toastr.success('Replicated to ' + vm.remoteDB);
       }).on('paused', function () {
-        toastr.warn('Paused Replication for ' + remoteDB);
+        toastr.info('Paused Replication for ' + vm.remoteDB);
       }).on('active', function () {}).on('denied', function (info) {
-        toastr.error('Denied for ' + remoteDB);
+        $log.info(info);
+        toastr.error('Denied for ' + vm.remoteDB);
       }).on('complete', function (info) {
-        console.log(info);
+        $log.info(info);
         if (info.ok) {
-          toastr.success('Completed Replication for ' + remoteDB);
+          toastr.success('Completed Replication for ' + vm.remoteDB);
         } else {
-          angular.forEach(info.errors, function (v, k) {
+          angular.forEach(info.errors, function (v) {
             toastr.error(v.status + ' Error ' + v.message);
           });
         }
       }).on('error', function (err) {
-        toastr.error('Failed Replication ' + remoteDB);
+        $log.error(err);
+        toastr.error('Failed Replication ' + vm.remoteDB);
       });
 
 
@@ -95,33 +103,34 @@
         }
       };
 
-      db.replicate.from(remoteDB, opts).on('change', function (info) {
-        toastr.success('Replicated  From ' + remoteDB);
+      db.replicate.from(vm.remoteDB, opts).on('change', function (info) {
+        $log.info(info);
+        toastr.success('Replicated  From ' + vm.remoteDB);
         vm.getAllDocs();
       }).on('paused', function () {
-        toastr.info('Paused Replication for ' + remoteDB);
+        toastr.info('Paused Replication for ' + vm.remoteDB);
         vm.getAllDocs();
       }).on('active', function () {}).on('denied', function (info) {
-        toastr.error('Denied for ' + remoteDB);
+        $log.info(info);
+        toastr.error('Denied for ' + vm.remoteDB);
       }).on('complete', function (info) {
 
         // console.log(info);
 
         if (info.ok) {
-          toastr.success('Completed Replication for ' + remoteDB);
+          toastr.success('Completed Replication for ' + vm.remoteDB);
           vm.getAllDocs();
         } else {
-          angular.forEach(info.errors, function (v, k) {
+          angular.forEach(info.errors, function (v) {
             toastr.error(v.status + ' Error ' + v.message);
           });
         }
 
       }).on('error', function (err) {
-        toastr.error('Failed Replication ' + remoteDB);
+        $log.error(err);
+        toastr.error('Failed Replication ' + vm.remoteDB);
       });
 
     };
-
-
-  };
+  }
 })();

@@ -8,28 +8,30 @@
   </md-button>
 
     <span ng-switch="vm.doc['@type']">
+
         <span ng-switch-when="user">
           <md-input-container>
             <label>Name</label>
-            <input ng-model="vm.doc.name[0].value"/>
+            <input ng-model="vm.doc.name[0].value" ng-blur="vm.update();"/>
           </md-input-container>
         </span>
 
         <span ng-switch-when="node">
           <md-input-container flex>
             <label>Title</label>
-            <input ng-model="vm.doc.title[0].value"/>
+            <input ng-model="vm.doc.title[0].value" ng-blur="vm.update();"/>
           </md-input-container>
         </span>
+
     </span>
 
-  <md-button class="md-fab md-mini md-secondary" aria-label="refresh" ng-click="vm.openDialog()">
+  <md-button class="md-fab md-mini md-primary md-secondary" aria-label="refresh" ng-click="vm.openDialog()">
     <md-tooltip md-direction="left">
       Inspect Doc JSON
     </md-tooltip>
     <md-icon md-font-library="material-icons">search</md-icon>
 
-    </sbutton>
+  </md-button>
 
 </md-list-item>
 

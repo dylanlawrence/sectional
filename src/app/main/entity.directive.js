@@ -1,4 +1,4 @@
-(function() {
+(function () {
   'use strict';
 
   angular
@@ -14,7 +14,7 @@
       templateUrl: 'app/main/entity.item.html',
       scope: {
         doc: '=',
-        show:'='
+        show: '='
       },
       controller: EntityController,
       controllerAs: 'vm',
@@ -23,33 +23,28 @@
 
     return directive;
 
-    EntityController.$inject = ['$mdDialog'];
-    function EntityController($mdDialog) {
+   // EntityController.$inject = ['$log', '$mdDialog','toastr'];
+
+    function EntityController($log, pouchDB, $mdDialog, toastr) {
 
       var vm = this;
 
-      vm.openDialog = function() {
-        $mdDialog.show(
-          $mdDialog.alert()
-            .clickOutsideToClose(true)
-            .title('Opening from the left')
-            .content('<pre>'+angular.toJson(vm.doc, true)+'</pre>')
-            .ariaLabel('Left to right demo')
-            .ok('Ok Cool')
-        );
+      var db       = pouchDB('default');
+
+      vm.update = function () {
+        $log.info(vm.doc);
+        db.put(vm.doc);
       };
 
-      vm.getIcon = function(){
+      vm.getIcon = function () {
 
-        if(!vm.doc)
+        if (!vm.doc)
           return;
 
         var entity_type = vm.doc.hasOwnProperty('@type') ? vm.doc['@type'] : 'search';
+        entity_type     = vm.doc.hasOwnProperty('type') ? vm.doc['type'][0]['target_id'] + '-' + entity_type : entity_type;
 
-        var entity_type = vm.doc.hasOwnProperty('type') ?  vm.doc['type'][0]['target_id'] +'-'+ entity_type : entity_type;
-
-
-        switch(entity_type){
+        switch (entity_type) {
           case 'user' :
             return 'person';
           case 'node' :
@@ -62,20 +57,25 @@
 
       };
 
+
+      vm.openDialog = function () {
+        $mdDialog.show(
+          $mdDialog.alert()
+            .clickOutsideToClose(true)
+            .title('Opening from the left')
+            .content('<pre>' + angular.toJson(vm.doc, true) + '</pre>')
+            .ariaLabel('Left to right demo')
+            .ok('Ok Cool')
+        );
+      };
+
       //'person';
       //vm.getIcon(d.doc)
 
       //vm.relativeDate = moment(vm.creationDate).fromNow();
 
     }
-
   }
-
-
-
-
-
-
 
 
 })();

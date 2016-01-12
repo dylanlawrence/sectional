@@ -3,6 +3,6 @@
 
   angular
     .module('sectional', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitize', 'ngMessages', 'ngAria', 'ngResource', 'ui.router', 'ngMaterial',
-                          'toastr', 'pouchdb','app.config']);
+                          'toastr', 'pouchdb','app.config','ng-appcache']);
 
 })();
