@@ -2,12 +2,30 @@
   <div layout="row" flex>
 
     <md-sidenav class="md-sidenav-left md-whiteframe-z2" md-component-id="left" md-is-locked-open="$mdMedia('gt-sm')">
-      <md-button ng-click="ctrl.getInitData()" ng-hide="ctrl.hasDocs();">Get Initial Data</md-button>
+
+
+      <md-button ng-click="ctrl.getInitData()" ng-hide="ctrl.hasDocs();">Get Dummy Data</md-button>
+
       <md-button ng-click="ctrl.bulkDocs()" ng-hide="ctrl.hasDocs();">Bulk Import Docs</md-button>
 
-      <md-button ng-click="ctrl.replicateFrom()">Replicate From Drupal</md-button>
+      <md-button ng-click="ctrl.replicateFrom()" class="md-raised md-primary">Replicate From Remote<br/>
+        <small></small>
+      </md-button>
 
-      <md-button ng-click="ctrl.replicateTo()" ng-show="ctrl.hasDocs();">Replicate To Drupal</md-button>
+      <md-button ng-click="ctrl.replicateTo()" ng-show="ctrl.hasDocs();" class="md-raised md-primary">Replicate To
+        Remote<br/>
+        <small></small>
+      </md-button>
+
+
+      <md-list class="md-raised">
+
+        <md-radio-group ng-model="remote">
+          <md-radio-button ng-repeat="r in remoteList" ng-value="r">{{r.label}}</md-radio-button>
+        </md-radio-group>
+
+      </md-list>
+
 
     </md-sidenav>
 
@@ -28,6 +46,7 @@
       <md-toolbar>
         <div class="md-toolbar-tools">IndexedDB Data Loaded</div>
       </md-toolbar>
+      <md-subheader> {{ctrl.remoteDB}}</md-subheader>
 
       <md-list>
 

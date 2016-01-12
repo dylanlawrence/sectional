@@ -1,14 +1,27 @@
 (function () {
   'use strict';
   angular.module('sectional').controller('MainController', MainController);
-  MainController.$inject = ['$log', 'ENV', 'User', '$http', 'pouchDB', 'toastr'];
+  MainController.$inject = ['$scope', '$log', 'ENV', 'User', '$http', 'pouchDB', 'toastr'];
 
-  function MainController($log, ENV, User, $http, pouchDB, toastr) {
+  function MainController($scope, $log, ENV, User, $http, pouchDB, toastr) {
 
-    var vm       = this;
-    var db       = pouchDB('default');
+    var vm  = this;
+    vm.env  = ENV;
+    var db  = pouchDB('default');
 
-    vm.remoteDB = ENV.remoteDB + 'default';
+
+    $scope.remoteList = [
+      {label:'Couch DB', url:ENV.couchDB + 'default'},
+      {label:'Drupal Relaxed DB', url: ENV.drupalDB + 'default'}
+    ];
+
+    $scope.remote = $scope.remoteList[0];
+
+    $scope.$watch('remote', function(){
+      vm.remoteDB = $scope.remote.url;
+    });
+
+    //vm.remoteDB = vm.remoteList[0].url;
 
     vm.alldocs = [];
     // get all docs loaded in db
@@ -27,8 +40,6 @@
       heartbeat:10000
     }).$promise
       .then(null, null, vm.getAllDocs);
-
-
 
 
     vm.hasDocs = function () {
