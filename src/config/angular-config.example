@@ -2,15 +2,17 @@
     "development": {
         "version": "0.0.1",
         "ENV": {
-            "remoteDB" : "http://replicator:replicator@localhost",
+            "couchDB" : "http://0.0.0.0:5984/",
+            "drupalDB" : "http://replicator:replicator@localhost/relaxed/",
             "api": "http://localhost/"
         }
     },
     "production": {
         "version": "0.0.1",
         "ENV": {
-            "remoteDB" : "http://replicator:replicator@localhost",
-            "api": "https://api.production.com/"
+            "couchDB" : "http://0.0.0.0:5984/",
+            "drupalDB" : "http://replicator:replicator@localhost/relaxed/",
+            "api": "http://localhost/"
         }
     }
 }
